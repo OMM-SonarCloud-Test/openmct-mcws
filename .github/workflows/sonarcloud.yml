@@ -74,34 +74,21 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
-    - name: Post-Process Output
-      run: |
-        python3 -m pip install nasa-scrub
- 
-        results_dir=`realpath ${{ github.workspace }}/../results`
-        sarif_files=`find $results_dir -name '*.sarif'`
- 
-        for sarif_file in $sarif_files
-        do
-          output_file="$results_dir/$(basename $sarif_file .sarif).scrub"
- 
-          python3 -m scrub.tools.parsers.translate_results $sarif_file $output_file ${{ github.workspace }} scrub
-        done
- 
-        python3 -m scrub.tools.parsers.csv_parser $results_dir
- 
-        echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
-       
-      
-    - name: Upload CodeQL Artifacts
-      uses: actions/upload-artifact@v4.3.1
+    - name: Upload
+      uses: actions/upload-artifact@master
       with:
-        name: codeql-artifacts
-        path: ${{ env.RESULTS_DIR }}
+        name: codeql-output
+        path: /home/runner/work/openmct-mcws/results/javascript.sarif
+
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: codeql-output
+          path: /home/runner/work/openmct-mcws/results/javascript.sarif
+    
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
