@@ -109,11 +109,11 @@ jobs:
         echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
        
       
-    - name: Upload CodeQL Artifacts
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: codeql-artifacts
-        path: ${{ env.RESULTS_DIR }}
+    # - name: Upload CodeQL Artifacts
+    #   uses: actions/upload-artifact@v4.3.1
+    #   with:
+    #     name: codeql-artifacts
+    #     path: ${{ env.RESULTS_DIR }}
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
