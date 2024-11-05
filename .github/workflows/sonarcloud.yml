@@ -92,7 +92,7 @@ jobs:
 
     - name: Post-Process Output
       run: |
-        ls -alt ${{ env.RESULTS_DIR }}
+        ls -alt /home/runner/work/openmct-mcws/results
  
     #     results_dir=`realpath ${{ github.workspace }}/../results`
     #     sarif_files=`find $results_dir -name '*.sarif'`
