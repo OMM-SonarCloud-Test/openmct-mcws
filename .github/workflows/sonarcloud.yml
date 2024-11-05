@@ -92,21 +92,39 @@ jobs:
 
     - name: Post-Process Output
       run: |
-        python3 -m pip install nasa-scrub
+        ls -alt ${{ env.RESULTS_DIR }}
  
-        results_dir=`realpath ${{ github.workspace }}/../results`
-        sarif_files=`find $results_dir -name '*.sarif'`
+    #     results_dir=`realpath ${{ github.workspace }}/../results`
+    #     sarif_files=`find $results_dir -name '*.sarif'`
  
-        for sarif_file in $sarif_files
-        do
-          output_file="$results_dir/$(basename $sarif_file .sarif).scrub"
+    #     for sarif_file in $sarif_files
+    #     do
+    #       output_file="$results_dir/$(basename $sarif_file .sarif).scrub"
  
-          python3 -m scrub.tools.parsers.translate_results $sarif_file $output_file ${{ github.workspace }} scrub
-        done
+    #       python3 -m scrub.tools.parsers.translate_results $sarif_file $output_file ${{ github.workspace }} scrub
+    #     done
  
-        python3 -m scrub.tools.parsers.csv_parser $results_dir
+    #     python3 -m scrub.tools.parsers.csv_parser $results_dir
  
-        echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
+    #     echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
+
+    # - name: Post-Process Output
+    #   run: |
+    #     python3 -m pip install nasa-scrub
+ 
+    #     results_dir=`realpath ${{ github.workspace }}/../results`
+    #     sarif_files=`find $results_dir -name '*.sarif'`
+ 
+    #     for sarif_file in $sarif_files
+    #     do
+    #       output_file="$results_dir/$(basename $sarif_file .sarif).scrub"
+ 
+    #       python3 -m scrub.tools.parsers.translate_results $sarif_file $output_file ${{ github.workspace }} scrub
+    #     done
+ 
+    #     python3 -m scrub.tools.parsers.csv_parser $results_dir
+ 
+    #     echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
        
       
     # - name: Upload CodeQL Artifacts
