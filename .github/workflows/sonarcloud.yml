@@ -119,8 +119,10 @@ jobs:
         for sarif_file in $sarif_files
         do
           output_file="$results_dir/$(basename $sarif_file .sarif)_stripped.sarif"
+          output_file_scrub="$results_dir/$(basename $sarif_file .sarif)_stripped.scrub"
  
           python3 -m scrub.tools.parsers.translate_results $sarif_file $output_file ${{ github.workspace }} sarif
+          python3 -m scrub.tools.parsers.translate_results $sarif_file $output_file_scrub ${{ github.workspace }} scrub
         done
  
         # python3 -m scrub.tools.parsers.csv_parser $results_dir
@@ -128,11 +130,11 @@ jobs:
         echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
        
       
-    # - name: Upload CodeQL Artifacts
-    #   uses: actions/upload-artifact@v4.3.1
-    #   with:
-    #     name: codeql-artifacts
-    #     path: ${{ env.RESULTS_DIR }}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: codeql-artifacts
+        path: ${{ env.RESULTS_DIR }}
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
